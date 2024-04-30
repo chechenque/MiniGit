@@ -1,0 +1,2 @@
+Texto de ejemplo de rama A version 1
+Texto de ejemplo de rama A version 2
