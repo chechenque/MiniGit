@@ -1,9 +1,14 @@
 package kass.concurrente.util;
 
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.time.Instant; //Biblioteca para ejecutar numeroCommit()
 
@@ -79,10 +84,93 @@ public class Util {
     }
 
     // Metodo ejemplo para generar numeros 'unicos' para los commits
-    private long numeroCommit() {
+    private static long numeroCommit() {
         long timestamp = Instant.now().toEpochMilli();
         int numAleatorio = (int)(Math.random() * 65536);
         long numCommit = (timestamp << 16) | (numAleatorio & 0xFFFF);
         return numCommit;
     }
+
+    /**
+     * Método para Add
+     * @param sourceDirectory
+     * @param stagingDirectory
+     * @throws IOException
+     */
+    public static void gitAdd(String sourceDirectory, String stagingDirectory) throws IOException {
+        Path sourcePath = Paths.get(sourceDirectory);
+        Path stagingPath = Paths.get(stagingDirectory);
+        Files.walkFileTree(sourcePath, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                Path relativePath = sourcePath.relativize(file);
+                Path targetFile = stagingPath.resolve(relativePath);
+                Files.copy(file, targetFile, StandardCopyOption.REPLACE_EXISTING);
+                return FileVisitResult.CONTINUE;
+            }
+        });
+    }
+
+    /**
+     * Método para el status
+     * @param directoryPath
+     * @throws IOException
+     */
+    public static String gitStatus(String directoryPath) {
+        // Mensaje inicial
+        StringBuilder statusBuilder = new StringBuilder("Files to commit:\n");
+
+        try (Stream<Path> filesStream = Files.walk(Paths.get(directoryPath))) {
+            // Recorre los archivos en el directorio
+            String fileNames = filesStream
+                    // Filtra solo los archivos regulares
+                    .filter(Files::isRegularFile)
+                    // Obtiene solo el nombre de archivo de cada Path
+                    .map(Path::getFileName)
+                    // Convierte el nombre de archivo a String
+                    .map(Path::toString)
+                    // Convierte a una sola cadena separada por nuevas líneas
+                    .collect(Collectors.joining("\n"));
+
+            // Agrega los nombres de archivo al StringBuilder
+            statusBuilder.append(fileNames);
+
+            // Devuelve el resultado como String
+            return statusBuilder.toString();
+        } catch (IOException exception) {
+            exception.getMessage();
+        }
+
+        return statusBuilder.toString();
+    }
+
+    /**
+     * Método para el commit
+     * @param stagingDirectory
+     * @param commitDirectory
+     * @throws IOException
+     */
+    public static void gitCommit(String stagingDirectory, String commitDirectory) throws IOException {
+        // Crear un archivo que represente el commit actual
+        String commitFileName = "commit_" + Long.toString(numeroCommit()) + ".txt";
+        Path commitFilePath = Paths.get(commitDirectory, commitFileName);
+
+        try (BufferedWriter writer = Files.newBufferedWriter(commitFilePath);
+            Stream<Path> filesStream = Files.walk(Paths.get(stagingDirectory))) {
+            // Escribir la lista de archivos en el área de preparación al archivo de commit
+            filesStream.filter(Files::isRegularFile)
+                    .map(Path::toString)
+                    .forEach(path -> {
+                        try {
+                            writer.write(path);
+                            writer.newLine();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+        } catch (IOException exception) {
+            exception.getMessage();
+        }
+    }
+
 }
