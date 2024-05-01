@@ -5,11 +5,33 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Logger;
+import java.util.logging.Level;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.SimpleFormatter;
 
 /**
  * Clase Hash que proporciona métodos para generar un hash SHA-1 y guardar ese hash en un archivo.
+ * @author Isaías Castrejón
+ * @author Julieta Vargas
+ * @author Gerardo Castellanos
+ * @version 1.0
  */
 public class Hash {
+    public static final String LOG = "Hash";
+
+    private static final Logger logger = Logger.getLogger(Hash.class.getName());
+
+    static {
+        try {
+            ConsoleHandler consoleHandler = new ConsoleHandler();
+            consoleHandler.setFormatter(new SimpleFormatter());
+            logger.addHandler(consoleHandler);
+            logger.setUseParentHandlers(false);
+        } catch (SecurityException e) {
+            logger.log(Level.SEVERE, "Error setting up console handler.", e);
+        }
+    }
 
     /**
      * Genera un hash SHA-1 a partir de los parámetros proporcionados.
@@ -30,7 +52,7 @@ public class Hash {
             }
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
-            System.err.println("SHA-1 algorithm not available.");
+            logger.log(Level.SEVERE, "SHA-1 algorithm not available.", e);
             return null;
         }
     }
@@ -48,17 +70,12 @@ public class Hash {
 
         String filename = directorio + "/" + hash + ".txt";
 
-        try {
-            FileWriter writer = new FileWriter(filename);
+        try (FileWriter writer = new FileWriter(filename)) {
             writer.write(hash);
-            writer.close();
-            System.out.println("Hash guardado en " + filename);
+            logger.log(Level.INFO, "Hash guardado en {0}", filename);
         } catch (IOException e) {
-            System.err.println("Ocurrió un error al escribir el hash en el archivo: " + e.getMessage());
+            logger.log(Level.SEVERE, "Ocurrió un error al escribir el hash en el archivo: {0}", filename);
         }
-
-        //TODO: Ver el orden de los commits 
-        
     }
 
     /**
@@ -67,8 +84,6 @@ public class Hash {
      */
     public static void main(String[] args) {
         String hash = generaHash("bug1", "Arregla bug 1");
-        System.out.println(hash);
         guardaHash(hash, "./commits");
     }
-
 }
