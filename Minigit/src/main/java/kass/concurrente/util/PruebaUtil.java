@@ -20,13 +20,6 @@ public class PruebaUtil {
 
         System.out.println(util.leerArchivo(version + File.separator + archivo));
 
-
-        // Esta prueba necesita comentar la linea 33 y descomentar las lineas 34 y 35 de Util.java
-        // util.crearCarpeta(rama);
-        // version = getUltimaVersion(rama);
-        // util.guardarArchivo(version + File.separator + nuevoArchivo, contenidoNuevo);
-        
-        // System.out.println(util.leerArchivo(version + File.separator + nuevoArchivo));
     }
 
     /**
