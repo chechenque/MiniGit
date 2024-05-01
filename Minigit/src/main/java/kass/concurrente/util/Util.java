@@ -28,6 +28,7 @@ public class Util {
      * @return true si se logro crear, false en otro caso (la carpeta ya existe)
      */
     public boolean crearCarpeta(String rutaCarpeta) {
+        final String log = "crearCarpeta";
         File carpeta = new File(rutaCarpeta);
         if (!carpeta.exists()) {
             carpeta.mkdirs();
@@ -42,6 +43,7 @@ public class Util {
      * @param contenido Contenido que se va a escribir en el archivo.
      */
     public void guardarArchivo(String rutaArchivo, String contenido) {
+        final String log = "guardarArchivo";
         try {
             File archivo = new File(rutaArchivo);
             FileWriter escritor = new FileWriter(archivo);
@@ -58,20 +60,18 @@ public class Util {
      * @return El contenido del archivo como una cadena de caracteres.
      */
     public String leerArchivo(String rutaArchivo) throws IOException {
+        final String log = "leerArchivo";
         StringBuilder content = new StringBuilder();
         File file = new File(rutaArchivo);
-        
         if (!file.exists() || !file.isFile()) {
             throw new IllegalArgumentException("El archivo no existe o no es valido D:");
         }
-        
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 content.append(line).append("\n");
             }
         }
-        
         return content.toString();
     }
 
@@ -81,6 +81,7 @@ public class Util {
      * @return true si se logro borrar, false en otro caso
      */
     public static boolean borrarCarpeta(String ruta) {
+        final String log = "borrarCarpeta";
         File carpeta = new File(ruta);
         if (carpeta.isDirectory()) {
             File[] archivos = carpeta.listFiles();

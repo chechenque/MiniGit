@@ -25,6 +25,8 @@ import java.io.IOException;
 // |   |-- ramaB
 
 public class Stash {
+    public static final String LOG = "Stash";
+
     private Util util;
     private String rutaStash;
 
@@ -39,13 +41,9 @@ public class Stash {
      * @param carpeta que se ve a almacenar en los stash de la rama
      */
     public void guardarStash(String rama, Carpeta carpeta) throws IOException {
+        final String log = "guardarStash";
         String nuevoStash = rutaStash + File.separator + rama + File.separator + carpeta.getNombre();
         boolean r = util.crearCarpeta(nuevoStash);
-        if (r) {
-            System.out.println("si se creo");
-        } else {
-            System.out.println("no se creo");
-        }
         guardaArchivosStash(nuevoStash, carpeta.getArchivos());
         guardaCarpetasStash(nuevoStash, carpeta.getCarpetas());
     }
@@ -56,14 +54,10 @@ public class Stash {
      * @param carpetas todas las carpetas a guardar
      */
     private void guardaCarpetasStash(String ruta, List<Carpeta> carpetas) throws IOException {
+        final String log = "guardaCarpetasStash";
         if (carpetas != null) {
             for (Carpeta carpeta : carpetas) {
                 boolean r = util.crearCarpeta(ruta + File.separator + carpeta.getNombre());
-                if (r) {
-                    System.out.println("si se creo");
-                } else {
-                    System.out.println("no se creo");
-                }
                 guardaArchivosStash(ruta + File.separator + carpeta.getNombre(), carpeta.getArchivos());
                 guardaCarpetasStash(ruta + File.separator + carpeta.getNombre(), carpeta.getCarpetas());
             }
@@ -76,6 +70,7 @@ public class Stash {
      * @param archivos lista de los archivos a guardar
      */
     private void guardaArchivosStash(String ruta, List<Archivo> archivos) throws IOException {
+        final String log = "guardaArchivosStash";
         if (archivos != null) {
             for (Archivo archivo : archivos) {
                 StringBuilder contenido = new StringBuilder();
@@ -97,7 +92,8 @@ public class Stash {
      * @return todos los nombres de los stashes almacenados o una cadena vacia si la rama no tiene stashes
      */
     public String getNombres(String rama) {
-        final Logger LOG = Logger.getLogger("kass.concurrente.stash.Stash");
+        final Logger logAux = Logger.getLogger("kass.concurrente.stash.Stash");
+        final String log = "getNombres";
         File carpetaRama = new File(rutaStash + File.separator + rama);
         String stashes = "";
         if (carpetaRama.exists() && carpetaRama.isDirectory()) {
@@ -107,10 +103,10 @@ public class Stash {
                     stashes += "\n" + archivo.getName();
                 }
             } else {
-                LOG.info("La rama '" + rama + "' no tiene stashes :0");
+                logAux.info("La rama '" + rama + "' no tiene stashes :0");
             }
         } else {
-            LOG.info("La rama '" + rama + "' no tiene stashes :0");
+            logAux.info("La rama '" + rama + "' no tiene stashes :0");
         }
         return stashes;
     }
@@ -122,6 +118,7 @@ public class Stash {
      * @return la ruta completa del stash de la rama o la cadena vacia si no existe el stash dado
      */
     public String getRutaStash(String rama, String stash) {
+        final String log = "getRutaStash";
         String ruta = rutaStash + File.separator + rama + File.separator + stash;
         File carpetaStash = new File(rutaStash + File.separator + rama);
         if (carpetaStash.exists() && carpetaStash.isDirectory()) {
@@ -137,6 +134,7 @@ public class Stash {
      * @return ruta completa del stash mas reciente
      */
     public String getUltimoStash(String rama) {
+        final String log = "getUltimoStash";
         File directorio = new File(rutaStash + File.separator + rama);
         File versionMasNueva = null;
         long fechaMasNueva = Long.MIN_VALUE;
@@ -162,6 +160,7 @@ public class Stash {
      * @return true si fue borrado, false en otro caso
      */
     public boolean borraStash(String rama, String stash) {
+        final String log = "borraStash";
         return util.borrarCarpeta(getRutaStash(rama, stash));
     }
 }
