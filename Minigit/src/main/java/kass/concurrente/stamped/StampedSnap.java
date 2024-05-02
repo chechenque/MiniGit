@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Clase que modela un StampedSnap
  * @author Kassandra Mirael
- * @version 1.0
+ * @version 1.gi0
  */
 public class StampedSnap<T>{
     public static final String LOG = "StampedSnap";
