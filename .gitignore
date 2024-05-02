@@ -31,9 +31,14 @@ google-services.json
 
 # Android Profiling
 *.hprof
-
+# MacOS files
 *.class
 .DS_STORE
 *.icloud
 
 /target
+# Target folder
+/target/
+
+# VS Code config
+.vscode/
