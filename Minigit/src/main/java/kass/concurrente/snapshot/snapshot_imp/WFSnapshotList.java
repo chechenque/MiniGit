@@ -43,7 +43,7 @@ public class WFSnapshotList<T> implements Snapshot<T> {
         while (this.aTable.size() <= id) {
             this.aTable.add(new StampedSnap<>(this.init));
         }
-        T[] snap = scan();
+        ArrayList<T> snap = scan();
         StampedSnap<T> oldValue = this.aTable.get(id);
         StampedSnap<T> newValue = new StampedSnap<>(oldValue.getStamp()+1, value, snap);
         this.aTable.set(id, newValue);
@@ -56,7 +56,7 @@ public class WFSnapshotList<T> implements Snapshot<T> {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public T[] scan() {
+    public ArrayList<T> scan() {
         StampedSnap<T>[] oldCopy;
         StampedSnap<T>[] newCopy;
         Boolean[] moved = new Boolean[this.aTable.size()];
@@ -74,9 +74,9 @@ public class WFSnapshotList<T> implements Snapshot<T> {
                     }
                 }
             }
-            T[] result = (T[]) new Object[this.aTable.size()];
+            ArrayList<T> result = new ArrayList<>();
             for(Integer j = 0; j < this.aTable.size(); j++){
-                result[j] = newCopy[j].getValue();
+                result.add( newCopy[j].getValue());
             }
             return result;
         }
