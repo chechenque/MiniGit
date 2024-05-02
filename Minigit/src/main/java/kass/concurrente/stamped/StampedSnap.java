@@ -22,6 +22,7 @@ public class StampedSnap<T>{
         this.stamp = 0;
         this.value = value;
         this.snap = new ArrayList<>();
+        this.snap.add(value);
     }
 
     /**
