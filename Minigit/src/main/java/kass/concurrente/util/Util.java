@@ -2,7 +2,11 @@ package kass.concurrente.util;
 
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
+import java.util.Base64;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.io.File;
@@ -11,6 +15,7 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Clase encargada de la persistencia de archivos
@@ -116,19 +121,23 @@ public class Util {
     }
 
     /**
-     * Método para Add
-     * @param sourceDirectory
-     * @param stagingDirectory
-     * @throws IOException
+     * Método para agregar archivos al área de preparación (staging area).
+     * @param workingDirectory Directorio de trabajo donde se encuentran los archivos.
+     * @param stagingDirectory Directorio de área de preparación donde se agregarán los archivos.
+     * @throws IOException Si ocurre un error al acceder o manipular los archivos.
      */
-    public static void gitAdd(String sourceDirectory, String stagingDirectory) throws IOException {
-        Path sourcePath = Paths.get(sourceDirectory);
+    public static void gitOrionAdd(String workingDirectory, String stagingDirectory) throws IOException {
+        Path workingPath = Paths.get(workingDirectory);
         Path stagingPath = Paths.get(stagingDirectory);
-        Files.walkFileTree(sourcePath, new SimpleFileVisitor<Path>() {
+        // Recorre recursivamente los archivos en el directorio de trabajo
+        Files.walkFileTree(workingPath, new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                Path relativePath = sourcePath.relativize(file);
+                // Obtiene la ruta relativa del archivo
+                Path relativePath = workingPath.relativize(file);
+                // Calcula la ruta de destino en el área de preparación
                 Path targetFile = stagingPath.resolve(relativePath);
+                // Copia el archivo al área de preparación, reemplazando si ya existe
                 Files.copy(file, targetFile, StandardCopyOption.REPLACE_EXISTING);
                 return FileVisitResult.CONTINUE;
             }
@@ -136,45 +145,94 @@ public class Util {
     }
 
     /**
-     * Método para el status
-     * @param directoryPath
-     * @throws IOException
+     * Método para verificar el estado de los archivos, identificando cambios entre el área de preparación y el directorio de trabajo.
+     * @param sourceDirectory Directorio de origen donde se encuentran los archivos originales.
+     * @param workingDirectory Directorio de trabajo donde se encuentran los archivos actuales.
+     * @return Una cadena que describe los cambios entre el área de preparación y el directorio de trabajo.
      */
-    public static String gitStatus(String directoryPath) {
-        // Mensaje inicial
-        StringBuilder statusBuilder = new StringBuilder("Files to commit:\n");
+    public static String gitStatus(String sourceDirectory, String workingDirectory) {
+        StringBuilder statusBuilder = new StringBuilder("Changes:\n\n");
 
-        try (Stream<Path> filesStream = Files.walk(Paths.get(directoryPath))) {
-            // Recorre los archivos en el directorio
-            String fileNames = filesStream
-                    // Filtra solo los archivos regulares
-                    .filter(Files::isRegularFile)
-                    // Obtiene solo el nombre de archivo de cada Path
-                    .map(Path::getFileName)
-                    // Convierte el nombre de archivo a String
-                    .map(Path::toString)
-                    // Convierte a una sola cadena separada por nuevas líneas
-                    .collect(Collectors.joining("\n"));
+        try (Stream<Path> sourceFilesStream = Files.walk(Paths.get(sourceDirectory));
+             Stream<Path> workingFilesStream = Files.walk(Paths.get(workingDirectory))) {
 
-            // Agrega los nombres de archivo al StringBuilder
-            statusBuilder.append(fileNames);
+            // Obtiene los checksums de los archivos en el directorio de origen y el directorio de trabajo
+            Map<String, String> sourceChecksums = checksumsMap(sourceFilesStream);
+            Map<String, String> workingChecksums = checksumsMap(workingFilesStream);
 
-            // Devuelve el resultado como String
+            // Compara los checksums para identificar cambios
+            for (Map.Entry<String, String> entry : sourceChecksums.entrySet()) {
+                String file = entry.getKey();
+                String checksum = entry.getValue();
+                // Verifica si el archivo está presente en el directorio de trabajo
+                if (!workingChecksums.containsKey(file)) {
+                    statusBuilder.append("Deleted: ").append(file).append("\n");
+                // Verifica si el archivo ha sido modificado
+                } else if (!workingChecksums.get(file).equals(checksum)) {
+                    statusBuilder.append("Modified: ").append(file).append("\n");
+                }
+            }
+
+            // Identifica archivos nuevos en el directorio de trabajo
+            for (Map.Entry<String, String> entry : workingChecksums.entrySet()) {
+                String file = entry.getKey();
+                // Verifica si el archivo no está presente en el directorio de origen
+                if (!sourceChecksums.containsKey(file)) {
+                    statusBuilder.append("Added: ").append(file).append("\n");
+                }
+            }
+
             return statusBuilder.toString();
         } catch (IOException exception) {
-            exception.getMessage();
+            exception.printStackTrace();
         }
 
         return statusBuilder.toString();
     }
 
+    // Método para calcular los checksums de los archivos en un directorio
+    private static Map<String, String> checksumsMap(Stream<Path> filesStream) {
+        return filesStream.filter(Files::isRegularFile)
+                .collect(Collectors.toMap(
+                        Util::relativizePath, // Función para obtener la ruta relativa del archivo
+                        path -> {
+                            try {
+                                return calculateChecksum(path); // Calcula el checksum del archivo
+                            } catch (IOException | NoSuchAlgorithmException e) {
+                                e.printStackTrace();
+                                return "";
+                            }
+                        }
+                ));
+    }
+    
+    // Método para obtener la ruta relativa de un archivo
+    private static String relativizePath(Path file) {
+        return file.getParent().relativize(file).toString();
+    }
+
+    // Método para calcular el checksum de un archivo usando SHA-256
+    private static String calculateChecksum(Path file) throws IOException, NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        try (InputStream inputStream = Files.newInputStream(file)) {
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                digest.update(buffer, 0, bytesRead);
+            }
+        }
+        byte[] checksumBytes = digest.digest();
+        return Base64.getEncoder().encodeToString(checksumBytes);
+    }
+
     /**
-     * Método para el commit
-     * @param stagingDirectory
-     * @param commitDirectory
-     * @throws IOException
+     * Método para realizar un commit de los cambios en el área de preparación y actualizar el directorio de origen.
+     * @param stagingDirectory Directorio de área de preparación donde se encuentran los archivos para el commit.
+     * @param sourceDirectory Directorio de origen donde se actualizarán los archivos después del commit.
+     * @param commitDirectory Directorio donde se almacenarán los commits.
+     * @throws IOException Si ocurre un error al acceder o manipular los archivos.
      */
-    public static void gitCommit(String stagingDirectory, String commitDirectory) throws IOException {
+    public static void gitCommit(String stagingDirectory, String sourceDirectory, String commitDirectory) throws IOException {
         // Crear un archivo que represente el commit actual
         String commitFileName = "commit_" + Long.toString(numeroCommit()) + ".txt";
         Path commitFilePath = Paths.get(commitDirectory, commitFileName);
@@ -195,6 +253,25 @@ public class Util {
         } catch (IOException exception) {
             exception.getMessage();
         }
-    }
 
+        // Copiar archivos del área de preparación al directorio fuente
+        Files.walkFileTree(Paths.get(stagingDirectory), new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                Path relativePath = Paths.get(stagingDirectory).relativize(file);
+                Path targetFile = Paths.get(sourceDirectory).resolve(relativePath);
+                Files.copy(file, targetFile, StandardCopyOption.REPLACE_EXISTING);
+                return FileVisitResult.CONTINUE;
+            }
+        });
+
+        // Vaciar el directorio de área de preparación después del commit
+        Files.walkFileTree(Paths.get(stagingDirectory), new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                Files.delete(file);
+                return FileVisitResult.CONTINUE;
+            }
+        });
+    }
 }
