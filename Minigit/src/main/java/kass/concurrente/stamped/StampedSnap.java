@@ -16,7 +16,7 @@ public class StampedSnap<T>{
 
     /**
      * Meotod constructor inicial
-     * @param value El valorr a registrar
+     * @param value El valor a registrar
      */
     public StampedSnap(T value){
         this.stamp = 0;

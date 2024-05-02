@@ -37,3 +37,8 @@ google-services.json
 *.icloud
 
 /target
+# Target folder
+/target/
+
+# VS Code config
+.vscode/
