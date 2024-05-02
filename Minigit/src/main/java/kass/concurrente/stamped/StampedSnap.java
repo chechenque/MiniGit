@@ -1,4 +1,7 @@
 package kass.concurrente.stamped;
+
+import java.util.ArrayList;
+
 /**
  * Clase que modela un StampedSnap
  * @author Kassandra Mirael
@@ -9,7 +12,7 @@ public class StampedSnap<T>{
 
     private long stamp;
     private T value;
-    private T[] snap;
+    private  ArrayList<T> snap;
 
     /**
      * Meotod constructor inicial
@@ -18,7 +21,7 @@ public class StampedSnap<T>{
     public StampedSnap(T value){
         this.stamp = 0;
         this.value = value;
-        this.snap = null;
+        this.snap = new ArrayList<>();
     }
 
     /**
@@ -27,7 +30,7 @@ public class StampedSnap<T>{
      * @param value El valor a registrar
      * @param snap Los cambios de este
      */
-    public StampedSnap(long label, T value, T[] snap){
+    public StampedSnap(long label, T value, ArrayList<T> snap){
         this.stamp = label;
         this.value = value;
         this.snap = snap;
@@ -38,6 +41,7 @@ public class StampedSnap<T>{
      * @return La estampa
      */
     public long getStamp(){
+        final String log = "getStamp";
         return stamp;
     }
 
@@ -46,6 +50,7 @@ public class StampedSnap<T>{
      * @return El valor
      */
     public T getValue(){
+        final String log = "getValue";
         return value;
     }
 
@@ -53,7 +58,8 @@ public class StampedSnap<T>{
      * Metodo que retorna el arreglo de snaps
      * @return El arreglo
      */
-    public T[] getSnap(){
+    public ArrayList<T> getSnap(){
+        final String log = "getSnap";
         return snap;
     }
 
@@ -62,6 +68,7 @@ public class StampedSnap<T>{
      * @param stamp La nueva estampa
      */
     public void setStamp(long stamp){
+        final String log = "setStamp";
         this.stamp = stamp;
     }
 
@@ -70,6 +77,7 @@ public class StampedSnap<T>{
      * @param value El nuevo valor
      */
     public void setValue(T value){
+        final String log = "setValue";
         this.value = value;
     }
 
@@ -77,7 +85,26 @@ public class StampedSnap<T>{
      * Metodo que asigna un nuevo arreglo de snapss
      * @param snap El nuevo arreglo
      */
-    public void setSnap(T[] snap){
+    public void setSnap(ArrayList<T> snap){
+        final String log = "setSnap";
         this.snap = snap;
+    }
+
+    /**
+     * agrega un commit a la lista de commits.
+     * @param value nuevo commit.
+     */
+    public void addCommit(T value){
+        final String log = "addCommit";
+        snap.add(value);
+    }
+    /**
+     * Retorna el commit de un índice dado.
+     * @param index índice del commit en la lista de commits.
+     * @return T commit que está en el índice index
+     */
+    public T getCommit(int index){
+        final String log = "getCommit";
+        return snap.get(index);
     }
 }

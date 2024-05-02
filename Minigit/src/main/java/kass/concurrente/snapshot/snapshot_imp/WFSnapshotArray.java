@@ -1,5 +1,6 @@
 package kass.concurrente.snapshot.snapshot_imp;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import kass.concurrente.snapshot.Snapshot;
@@ -42,7 +43,7 @@ public class WFSnapshotArray<T> implements Snapshot<T> {
         if (id >= this.aTable.length) {
             expandirArreglo();
         }
-        T[] snap = scan();
+        ArrayList<T> snap = scan();
         StampedSnap<T> oldValue = this.aTable[id];
         StampedSnap<T> newValue = new StampedSnap<>(oldValue.getStamp()+1, value, snap);
         this.aTable[id] = newValue;
@@ -72,7 +73,7 @@ public class WFSnapshotArray<T> implements Snapshot<T> {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public T[] scan() {
+    public ArrayList<T> scan() {
         StampedSnap<T>[] oldCopy;
         StampedSnap<T>[] newCopy;
         Boolean[] moved = new Boolean[this.aTable.length];
@@ -90,9 +91,9 @@ public class WFSnapshotArray<T> implements Snapshot<T> {
                     }
                 }
             }
-            T[] result = (T[]) new Object[this.aTable.length];
+            ArrayList<T> result = new ArrayList<>();
             for(Integer j = 0; j < this.aTable.length; j++){
-                result[j] = newCopy[j].getValue();
+                result.add(newCopy[j].getValue());
             }
             return result;
         }
