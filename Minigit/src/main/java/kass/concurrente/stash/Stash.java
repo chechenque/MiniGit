@@ -4,7 +4,6 @@ import kass.concurrente.util.Util;
 import kass.concurrente.modelos.Carpeta;
 import kass.concurrente.modelos.Archivo;
 import java.io.BufferedReader;
-// import java.io.FileWriter;
 import java.io.FileReader;
 import java.util.List;
 import java.io.File;
@@ -14,6 +13,7 @@ import java.io.IOException;
 /**
  * Clase que guarda un stash
  * @author Equipo DIA
+ * @version 1.0
  */
 
 // Ejemplo de distribucion de carpetas de stash

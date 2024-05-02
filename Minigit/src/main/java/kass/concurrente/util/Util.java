@@ -9,6 +9,7 @@ import java.io.IOException;
 /**
  * Clase encargada de la persistencia de archivos
  * @author Equipo DIA
+ * @version 1.0
  */
 
 public class Util {
