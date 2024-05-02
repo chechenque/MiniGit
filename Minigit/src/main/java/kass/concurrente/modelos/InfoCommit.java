@@ -13,7 +13,7 @@ public class InfoCommit {
     private String nombre;
     private String descripcion;
     private Date fecha;
-    private String version;//Sujeto a cambios
+    private int checkpoint;//Sujeto a cambios
 
     /**
      * Metodo constructor
@@ -27,11 +27,11 @@ public class InfoCommit {
      * @param fecha La fecha del commit
      * @param version La version del commit
      */
-    public InfoCommit(String nombre, String descripcion, Date fecha, String version) {
+    public InfoCommit(String nombre, String descripcion, Date fecha, int checkpoint) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.fecha = fecha;
-        this.version = version;
+        this.checkpoint = checkpoint;
     }
 
     /**
@@ -62,8 +62,8 @@ public class InfoCommit {
      * Metodo que retorna la version
      * @return La version
      */
-    public String getVersion() {
-        return version;
+    public int getCheckpoint() {
+        return checkpoint;
     }
 
     /**
@@ -94,8 +94,8 @@ public class InfoCommit {
      * Metodo que asgina una nueva version
      * @param version La nueva version
      */
-    public void setVersion(String version) {
-        this.version = version;
+    public void setCheckpoint(int checkpoint) {
+        this.checkpoint = checkpoint;
     }
     
 }
