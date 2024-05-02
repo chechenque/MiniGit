@@ -28,9 +28,6 @@ public class UtilTest {
     @Test
     void testReadFile() {
 
-        // Descomenten esto, lo comenté nada más para probar que se podían pasar todos los tests
-
-        /*
         File file = new File("test.txt");
         try {
             assertTrue(file.createNewFile());
@@ -40,7 +37,7 @@ public class UtilTest {
         } finally {
             file.delete(); // Eliminamos el archivo de prueba después de la prueba
         }
-        */
+        
     }
 
 
@@ -50,12 +47,9 @@ public class UtilTest {
     @Test
     void testCreateFolder() {
 
-        // Descomenten esto, lo comenté nada más para probar que se podían pasar todos los tests
-
-        /*
         util.createFolder();
         assertTrue(new File("folder").exists());
-        */
+        
     }
 
     /**
@@ -64,12 +58,9 @@ public class UtilTest {
     @Test
     void testSaveFile() {
 
-        // Descomenten esto, lo comenté nada más para probar que se podían pasar todos los tests
-        
-        /*
         util.saveFile();
         assertTrue(new File("savedFile.txt").exists());
-        */
+
     }
 
     /**
