@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Clase que modela un StampedSnap
- * @author Kassandra Mirael
+ * @author Kassandra Mirael. Equipo los hilos del barrio
  * @version 1.gi0
  */
 public class StampedSnap<T>{
