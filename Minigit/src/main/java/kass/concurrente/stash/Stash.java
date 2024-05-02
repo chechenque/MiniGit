@@ -16,9 +16,10 @@ import java.io.IOException;
  * @version 1.0
  */
 
-// Ejemplo de distribucion de carpetas de stash
+// Ejemplo de distribucion de carpetas de stash (la carpeta stashes es solo un ejemplo de uso)
 // |-- stash
 // |-- ramas
+// |-- stashes
 // |   |-- ramaA
 // |   |   |-- stash 1
 // |   |   |-- stash 2

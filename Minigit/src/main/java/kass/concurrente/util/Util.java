@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class Util {
     public static final String LOG = "Util";
-    // Ejemplo de distribucion de carpetas de git
+    // Ejemplo de distribucion de carpetas de git (la carpeta ramas es solo un ejemplo de uso)
     // |-- src
     // |-- ramas
     // |   |-- ramaA
