@@ -11,6 +11,7 @@ import kass.concurrente.stamped.StampedSnap;
  * @author 3 cores
  */
 public class WFSnapshotList<T> implements Snapshot<T> {
+    public static final String LOG = "WFSnapshotLis";
     // Tabla de valores
     private List<StampedSnap<T>> aTable;
     // Valor inicial
