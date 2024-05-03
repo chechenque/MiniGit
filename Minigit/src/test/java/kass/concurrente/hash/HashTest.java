@@ -15,6 +15,13 @@ import org.junit.jupiter.api.Test;
  */
 class HashTest {
 
+    /**
+     * Método para generar dispersion SHA-1 usando 
+     * bibliotecas.
+     * @param cadenaPlana la cadena de la que queremos
+     * la dispersion.
+     * @return una cadena con la dispersion requerida.
+     */
     private String generaSHA1(String cadenaPlana) {
         StringBuilder sha1 = new StringBuilder();
         try {
@@ -31,6 +38,10 @@ class HashTest {
         return sha1.toString();
     }
 
+    /**
+     * Método que prueba, para dos pares de cadenas 
+     * idénticos, que la dispersion sea distinta.
+     */
     @Test
     void testGeneraHashDistintos() {
         String s1 = "Turing";
@@ -45,6 +56,10 @@ class HashTest {
         assertNotEquals(h1, h2, "Dispersiones idénticas!");
     }
 
+    /**
+     * Método para probar si el directorio es creado 
+     * exitosamente.
+     */
     @Test
     void testCreaDirectorio() {
         String path = "directorio/inexistente";
