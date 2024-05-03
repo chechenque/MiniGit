@@ -8,7 +8,7 @@ public class Comandos {
     ControladorIdiomas idiomas = new ControladorIdiomas(); 
 
     /**
-     * Metodo agregado por el equipo los Threads resto del código hecho por el equipo de gorilas furiosos
+     * Metodo agregado por el equipo los Threads, resto del código hecho por el equipo de Gorilas Furiosos
      * Metodo para establecer el idioma a cada una de las ejecuciones
      * @param idioma - idioma a establecer
      */
@@ -16,6 +16,11 @@ public class Comandos {
         idiomas.cargarIdioma(idioma);
     }
 
+    /**
+     * Método modificado por el equipo de los Threads para que los mensajes puedan tener diferentes traducciones a varios idiomas.
+     * Método que ejecuta un comando
+     * @param comando - comando que se va a ejecutar.
+     */
     public void ejecutarComando(String comando) {
         switch(comando) {
             case "git push":
