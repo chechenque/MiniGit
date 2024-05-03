@@ -1,0 +1,19 @@
+{
+    "ascii":"                         :#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=\n                        *@*..................:::........:#@#.\n                      -%@-            .-+*#%@@@@@@#*=:    =@@=\n                     *@#.          :*@@@@%@@@@@@@@@@@@@:   .%@#.\n                   -%@=          .*@@@%#*@@#%@@@@@@@@@@=     +@@=\n                  *@#.          =@+##=-#@%%#=@@@@@@@@@@=%=    :%@#.\n                :%@=         .+%%%@@@*@@@@@@%#@@@@@@@@@=%@@-    *@@=\n               *@@:        =#@###@@#%@@@@@@@@*@@@@@@@%#%=@@@#:   -@@#.\n               :%@#.   -+##@@%@@@@@@@%%@@@@@@*@@@@@@**@@#*@@@@*.  #@@-\n                 +@@= -#*%@@@@@@@####@@%%@@@%#@@@@@#@@@@%*@@@@@@=%@*.\n               -:.-%@*.-%@@@@@@@%#**##%%%@@@*@@@@@@@@@@%*@@@@@%#@%-\n               :@==+#%@=:-+%#%%#*@@#+==#%%##*#@@@@@@@@*#@@@@%#%@%=-=#-\n                -%   -+**@ .====--.    :@@@@@@###%#*##@@@@*#%#+:   =+\n              -===. =%**#@=-:.          :@@@@@@@@@*@@@@@%%+%=*%%: :@=.\n            =#+-.  -%  +=.::-==++++++++++*%%%%%%##+**++++=---. .%-  .=+*=.\n               :=*#@: *-=*#.*# #--+ ==.:...--.  --: ==:.*+-*##. :@-=+++=:\n                  %= .+==++#*%=##%*#.-*%%*+@:%. @:*=% #+#:#=**#  =%:\n                 .+#%#*+=::. ::.=-:=++.#.#=%=*  *++.-++..--. .:-=+@*\n                      .:=+*#%%%#**++==-------------==++**#%%%#*+-:.\n                               -%@@*----=========#@@*-::.\n                                 +@@#.         :#@%:\n                                   .%@@=       +@@*\n                                     =@@%:   :%@%:\n                                     .*@@*:*@@+\n                                       -@@@@%:\n                                         *@+",
+    "bienvenida" : "Welcome to Minigit",
+    "error_idioma": "Error, not specified language.",
+    "idioma_elegido": "Success. \nLanguage has been changed correctly.",
+    "ejecutando":"Executing ",
+    "comandoNoRec":"Not recognized as a command. Please use 'git help' to get more help.",
+    "comandosDisponibles":"\n____________________\nAvailable commands:\n____________________\n",
+    "instrucciones":"Type your git commands (type 'exit' para close the Minigit):",
+    "git_push":"-git push: \nSend the local released changes to a remote repository.\nThis permit other collaborators can see the changes and stay \nsynchronized the share repository state ",
+    "git_add":"-git add: \nAdd changes to the prepared area to be included int he next commit\nBefore you realize the commit, the changes must be added to the preparation area using this command.",
+    "git_branch":"-git branch: \nLis t all the local branches of the actual repository, with the current branch highlighted. \nYou can also use to create and eliminate branches.",
+    "git_status":"-git status: \nYou can see the changes that you realized in your work area and wich are prepared to be included in the next commit.",
+    "git_help":"-help: \nShows information about all the available commands.",
+    "lang_help":"-lang: \n It help you to change the language of the interface.\n  lang es: Change the interface to spanish. \n  lang en: Change the interface to english",
+    "lang_es":"Changing language to spanish",
+    "lang_en":"Changing language to English"
+
+}  

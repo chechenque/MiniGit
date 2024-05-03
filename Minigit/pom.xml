@@ -24,7 +24,14 @@
           <version>${junit.jupiter.version}</version>
           <scope>test</scope>
         </dependency>
-      </dependencies>
+
+        <!-- https://mvnrepository.com/artifact/org.json/json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20240303</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
@@ -38,7 +45,7 @@
                 <manifest>
                   <addClasspath>true</addClasspath>
                   <classpathPrefix>lib/</classpathPrefix>
-                  <mainClass>kass.concurrrente.Main</mainClass>
+                  <mainClass>kass.concurrente.Main</mainClass>
                 </manifest>
               </archive>
             </configuration>
