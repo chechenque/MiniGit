@@ -38,20 +38,23 @@ class StashTest {
 
     @Test
     void guardarStashTest() {
-        Integer numArchivos = rnd.nextInt(1, 7);
-        List<Archivo> archivos = new ArrayList<>();
+    int numArchivos = rnd.nextInt(7) + 1; // Genera un número aleatorio entre 1 y 7
+    List<Archivo> archivos = new ArrayList<>();
 
-        for(int i = 0; i < numArchivos; i++){
-            Archivo archTemp = new Archivo(rutaTest, "archivo" + i);
-            archivos.add(archTemp);
-        }
-        Carpeta dirTemp = new Carpeta(rutaTest, "carpetaTest");
-        dirTemp.setArchivos(archivos);
-
-        try {
-            stash.guardarStash("ramaTest", dirTemp);
-        } catch (IOException | NullPointerException npe) {
-            fail("El stash debio ser guardado correctamente*");
-        }
+    for(int i = 0; i < numArchivos; i++){
+        Archivo archTemp = new Archivo(rutaTest, "archivo" + i);
+        archivos.add(archTemp);
     }
+    Carpeta dirTemp = new Carpeta(rutaTest, "carpetaTest");
+    dirTemp.setArchivos(archivos);
+
+    try {
+        stash.guardarStash("ramaTest", dirTemp);
+    } catch (IOException | NullPointerException npe) {
+        fail("El stash debió ser guardado correctamente.");
+    }
+}
+
+
+    
 }
