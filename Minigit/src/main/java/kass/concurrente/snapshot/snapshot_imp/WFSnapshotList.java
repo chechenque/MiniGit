@@ -33,6 +33,13 @@ public class WFSnapshotList<T> implements Snapshot<T> {
     }
 
     /**
+     * Metodo constructor
+     */
+    public WFSnapshotList(){
+        aTable = new ArrayList<>();
+    }
+
+    /**
      * Metodo que escribe el valor v en el registro
      * del proceso que realiza la llamada.
      * @param value La variable a escribir en el arreglo.

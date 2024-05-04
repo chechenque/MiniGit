@@ -13,6 +13,7 @@ public class InfoCommit {
     private String nombre;
     private String descripcion;
     private Date fecha;
+    private String hash;
     private int checkpoint;//Sujeto a cambios
 
     /**
@@ -25,12 +26,14 @@ public class InfoCommit {
      * @param nombre El nombre del commit
      * @param descripcion La descripcion del commit
      * @param fecha La fecha del commit
+     * @param hash El valor del Hash
      * @param checkpoint El checkpoint del commit
      */
-    public InfoCommit(String nombre, String descripcion, Date fecha, int checkpoint) {
+    public InfoCommit(String nombre, String descripcion, Date fecha, String hash, int checkpoint) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.fecha = fecha;
+        this.hash = hash;
         this.checkpoint = checkpoint;
     }
 
@@ -56,6 +59,14 @@ public class InfoCommit {
      */
     public Date getFecha() {
         return fecha;
+    }
+
+    /**
+     * Metodo que retorna el Hash
+     * @return El Hash
+     */
+    public String getHash(){
+        return hash;
     }
 
     /**
@@ -88,6 +99,14 @@ public class InfoCommit {
      */
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    /**
+     * Metodo que asigna un nuevo Hash
+     * @param hash El nuevo hash
+     */
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 
     /**
