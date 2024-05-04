@@ -6,6 +6,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -121,42 +122,22 @@ public class Util {
     }
 
     /**
-     * Método para agregar archivos al área de preparación (staging area).
-     * @param workingDirectory Directorio de trabajo donde se encuentran los archivos.
-     * @param stagingDirectory Directorio de área de preparación donde se agregarán los archivos.
-     * @throws IOException Si ocurre un error al acceder o manipular los archivos.
-     */
-    public static void gitOrionAdd(String workingDirectory, String stagingDirectory) throws IOException {
-        Path workingPath = Paths.get(workingDirectory);
-        Path stagingPath = Paths.get(stagingDirectory);
-        // Recorre recursivamente los archivos en el directorio de trabajo
-        Files.walkFileTree(workingPath, new SimpleFileVisitor<Path>() {
-            @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                // Obtiene la ruta relativa del archivo
-                Path relativePath = workingPath.relativize(file);
-                // Calcula la ruta de destino en el área de preparación
-                Path targetFile = stagingPath.resolve(relativePath);
-                // Copia el archivo al área de preparación, reemplazando si ya existe
-                Files.copy(file, targetFile, StandardCopyOption.REPLACE_EXISTING);
-                return FileVisitResult.CONTINUE;
-            }
-        });
-    }
-
-    /**
-     * Método para verificar el estado de los archivos, identificando cambios entre el área de preparación y el directorio de trabajo.
-     * @param sourceDirectory Directorio de origen donde se encuentran los archivos originales.
+     * Método para verificar el estado de los archivos, identificando cambios entre
+     * el área de preparación y el directorio de trabajo.
+     * 
+     * @param sourceDirectory  Directorio de origen donde se encuentran los archivos originales.
      * @param workingDirectory Directorio de trabajo donde se encuentran los archivos actuales.
-     * @return Una cadena que describe los cambios entre el área de preparación y el directorio de trabajo.
+     * @return Una cadena que describe los cambios entre el directorio de origen y el directorio de trabajo.
      */
     public static String gitStatus(String sourceDirectory, String workingDirectory) {
+        final String log = "gitStatus";
         StringBuilder statusBuilder = new StringBuilder("Changes:\n\n");
 
         try (Stream<Path> sourceFilesStream = Files.walk(Paths.get(sourceDirectory));
-             Stream<Path> workingFilesStream = Files.walk(Paths.get(workingDirectory))) {
+                Stream<Path> workingFilesStream = Files.walk(Paths.get(workingDirectory))) {
 
-            // Obtiene los checksums de los archivos en el directorio de origen y el directorio de trabajo
+            // Obtiene los checksums de los archivos en el directorio de origen y el
+            // directorio de trabajo
             Map<String, String> sourceChecksums = checksumsMap(sourceFilesStream);
             Map<String, String> workingChecksums = checksumsMap(workingFilesStream);
 
@@ -167,7 +148,7 @@ public class Util {
                 // Verifica si el archivo está presente en el directorio de trabajo
                 if (!workingChecksums.containsKey(file)) {
                     statusBuilder.append("Deleted: ").append(file).append("\n");
-                // Verifica si el archivo ha sido modificado
+                    // Verifica si el archivo ha sido modificado
                 } else if (!workingChecksums.get(file).equals(checksum)) {
                     statusBuilder.append("Modified: ").append(file).append("\n");
                 }
@@ -190,7 +171,12 @@ public class Util {
         return statusBuilder.toString();
     }
 
-    // Método para calcular los checksums de los archivos en un directorio
+    /**
+     * Método que genera un mapa de checksums para los archivos dados en un flujo de archivos.
+     *
+     * @param filesStream Flujo de archivos.
+     * @return Mapa que mapea rutas relativas de archivos a sus checksums.
+     */
     private static Map<String, String> checksumsMap(Stream<Path> filesStream) {
         return filesStream.filter(Files::isRegularFile)
                 .collect(Collectors.toMap(
@@ -202,16 +188,51 @@ public class Util {
                                 e.printStackTrace();
                                 return "";
                             }
-                        }
-                ));
-    }
-    
-    // Método para obtener la ruta relativa de un archivo
-    private static String relativizePath(Path file) {
-        return file.getParent().relativize(file).toString();
+                        }));
     }
 
-    // Método para calcular el checksum de un archivo usando SHA-256
+    /**
+     * Método para obtener la ruta relativa de un archivo hasta que el padre sea 
+     * "git/source" o "git/working".
+     *
+     * @param file Ruta absoluta del archivo.
+     * @return Ruta relativa del archivo.
+     */
+    private static String relativizePath(Path file) {
+        Path parent = file.getParent();
+        StringBuilder relativePath = new StringBuilder();
+
+        boolean foundGitSourceOrWorking = false;
+
+        // Iterar hacia arriba hasta encontrar "git/source" o "git/working"
+        while (parent != null) {
+            if (parent.endsWith("git/source") || parent.endsWith("git/working")) {
+                foundGitSourceOrWorking = true;
+                break;
+            }
+            parent = parent.getParent();
+        }
+
+        // Si se encontró "git/source" o "git/working", agregar la parte restante de la ruta relativa
+        if (foundGitSourceOrWorking) {
+            Path relative = parent.relativize(file);
+            relativePath.append("/").append(relative);
+        } else {
+            // Si no se encontró ninguno de los directorios, usar la ruta absoluta completa
+            relativePath.append(file.toString());
+        }
+
+        return relativePath.toString();
+    }
+
+    /**
+     * Método para calcular el checksum de un archivo usando SHA-256.
+     *
+     * @param file Ruta absoluta del archivo.
+     * @return Checksum SHA-256 del archivo en formato Base64.
+     * @throws IOException              Si hay un error de lectura del archivo.
+     * @throws NoSuchAlgorithmException Si no se encuentra el algoritmo de hash especificado.
+     */
     private static String calculateChecksum(Path file) throws IOException, NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         try (InputStream inputStream = Files.newInputStream(file)) {
@@ -226,19 +247,138 @@ public class Util {
     }
 
     /**
-     * Método para realizar un commit de los cambios en el área de preparación y actualizar el directorio de origen.
-     * @param stagingDirectory Directorio de área de preparación donde se encuentran los archivos para el commit.
-     * @param sourceDirectory Directorio de origen donde se actualizarán los archivos después del commit.
-     * @param commitDirectory Directorio donde se almacenarán los commits.
+     * Método para agregar archivos al área de preparación (staging area).
+     * 
+     * @param sourceDirectory  Directorio de origen donde se encuentran los archivos.
+     * @param workingDirectory Directorio de trabajo donde se encuentran los archivos.
+     * @param stagingDirectory Directorio de área de preparación donde se agregarán los archivos.
      * @throws IOException Si ocurre un error al acceder o manipular los archivos.
      */
-    public static void gitCommit(String stagingDirectory, String sourceDirectory, String commitDirectory) throws IOException {
+    public static void gitAdd(String sourceDirectory, String workingDirectory, String stagingDirectory)
+            throws IOException {
+        final String log = "gitAdd";
+        Map<String, String> changes = getChanges(sourceDirectory, workingDirectory);
+
+        for (Map.Entry<String, String> entry : changes.entrySet()) {
+            String file = entry.getKey();
+            String changeType = entry.getValue();
+            String markedFileName = markFileName(file, changeType);
+            // Si es un archivo nuevo o modificado, lo copia desde el working directory
+            Path sourceFile = Paths.get(workingDirectory, file); 
+            // Si es un archivo a borrar, lo copia desde el source directory
+            if (changeType.equals("d")) {
+                sourceFile = Paths.get(sourceDirectory, file); 
+            }
+            Path targetFile = Paths.get(stagingDirectory, markedFileName);
+            // Asegurar que el directorio de destino exista
+            Path parentDir = targetFile.getParent();
+            if (!Files.exists(parentDir)) {
+                Files.createDirectories(parentDir);
+            }
+            Files.copy(sourceFile, targetFile, StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
+
+    /**
+     * Obtiene los cambios entre el directorio de origen y el directorio de trabajo.
+     *
+     * @param sourceDirectory  Directorio de origen donde se encuentran los archivos originales.
+     * @param workingDirectory Directorio de trabajo donde se encuentran los archivos actuales.
+     * @return Mapa que describe los cambios entre los directorios.
+     * @throws IOException Si ocurre un error de E/S.
+     */
+    private static Map<String, String> getChanges(String sourceDirectory, String workingDirectory) throws IOException {
+        Map<String, String> changes = new HashMap<>();
+        try (Stream<Path> sourceFilesStream = Files.walk(Paths.get(sourceDirectory));
+                Stream<Path> workingFilesStream = Files.walk(Paths.get(workingDirectory))) {
+
+            Map<String, String> sourceChecksums = checksumsMap(sourceFilesStream);
+            Map<String, String> workingChecksums = checksumsMap(workingFilesStream);
+
+            // Compara los checksums para identificar cambios
+            for (Map.Entry<String, String> entry : sourceChecksums.entrySet()) {
+                String file = entry.getKey();
+                String checksum = entry.getValue();
+                if (!workingChecksums.containsKey(file)) {
+                    // Archivo a eliminar
+                    changes.put(file, "d");
+                } else if (!workingChecksums.get(file).equals(checksum)) {
+                    // Archivo modificado
+                    changes.put(file, "m");
+                }
+            }
+
+            // Identifica archivos nuevos en el directorio de trabajo
+            for (Map.Entry<String, String> entry : workingChecksums.entrySet()) {
+                String file = entry.getKey();
+                if (!sourceChecksums.containsKey(file)) {
+                    changes.put(file, "n"); // Nuevo archivo
+                }
+            }
+        }
+        return changes;
+    }
+
+    /**
+     * Marca el nombre del archivo según el tipo de cambio.
+     *
+     * @param fileName Nombre del archivo.
+     * @param changeType Tipo de cambio ("d" para eliminar, "m" para modificar, "n" para nuevo).
+     * @return Nombre del archivo marcado.
+     */
+    private static String markFileName(String fileName, String changeType) {
+        String markedFileName;
+        switch (changeType) {
+            // Marca para archivo a eliminar
+            case "d":
+                markedFileName = fileName + "_d"; 
+                break;
+            // Marca para archivo modificado
+            case "m":
+                markedFileName = fileName + "_m";
+                break;
+            // Marca para nuevo archivo
+            case "n":
+                markedFileName = fileName + "_n";
+                break;
+            // No hay marca
+            default:
+                markedFileName = fileName;
+        }
+        return markedFileName;
+    }
+
+    /**
+     * Método para realizar un commit de los cambios en el área de preparación y
+     * actualizar el directorio de origen. Además de vaciar los archivos y carpetas del 
+     * área de preparación.
+     * 
+     * @param stagingDirectory Directorio de área de preparación donde se encuentran los archivos para el commit.
+     * @param sourceDirectory  Directorio de origen donde se actualizarán los archivos después del commit.
+     * @param commitDirectory  Directorio donde se almacenarán los commits.
+     * @throws IOException Si ocurre un error al acceder o manipular los archivos.
+     */
+    public static void gitCommit(String stagingDirectory, String sourceDirectory, String commitDirectory)
+            throws IOException {
+        final String log = "gitCommit";
         // Crear un archivo que represente el commit actual
         String commitFileName = "commit_" + Long.toString(numeroCommit()) + ".txt";
         Path commitFilePath = Paths.get(commitDirectory, commitFileName);
+        writeChangesToCommitFile(stagingDirectory, commitFilePath);
+        processStagedFiles(stagingDirectory, sourceDirectory);
+        clearStagingDirectory(stagingDirectory);
+    }
 
+    /**
+     * Método para escribir los cambios del área de preparación en el archivo del commit.
+     * 
+     * @param stagingDirectory Directorio de área de preparación donde se encuentran los archivos para el commit.
+     * @param commitFilePath  Ruta para el archivo del commit.
+     * @throws IOException Si ocurre un error al acceder o manipular los archivos.
+     */
+    private static void writeChangesToCommitFile(String stagingDirectory, Path commitFilePath) throws IOException {
         try (BufferedWriter writer = Files.newBufferedWriter(commitFilePath);
-            Stream<Path> filesStream = Files.walk(Paths.get(stagingDirectory))) {
+                Stream<Path> filesStream = Files.walk(Paths.get(stagingDirectory))) {
             // Escribir la lista de archivos en el área de preparación al archivo de commit
             filesStream.filter(Files::isRegularFile)
                     .map(Path::toString)
@@ -253,23 +393,97 @@ public class Util {
         } catch (IOException exception) {
             exception.getMessage();
         }
+    }
 
-        // Copiar archivos del área de preparación al directorio fuente
+    /**
+     * Método para procesar los archivos que están en el área de preparación y que estos cambios se vean
+     * reflejados en el directorio de origen.
+     * 
+     * @param stagingDirectory Directorio de área de preparación donde se encuentran los archivos para el commit.
+     * @param sourceDirectory  Directorio de origen donde se actualizarán los archivos después del commit.
+     * @throws IOException Si ocurre un error al acceder o manipular los archivos.
+     */
+    private static void processStagedFiles(String stagingDirectory, String sourceDirectory) throws IOException {
+        // Procesar los archivos en el área de preparación
         Files.walkFileTree(Paths.get(stagingDirectory), new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                 Path relativePath = Paths.get(stagingDirectory).relativize(file);
                 Path targetFile = Paths.get(sourceDirectory).resolve(relativePath);
-                Files.copy(file, targetFile, StandardCopyOption.REPLACE_EXISTING);
+
+                // Elimina la marca "_d" del nombre del archivo y lo borra de la carpeta source
+                if (file.getFileName().toString().endsWith("_d")) {
+                    String newFileName = file.getFileName().toString().replace("_d", "");
+                    Path newFilePath = targetFile.resolveSibling(newFileName);
+                    Files.deleteIfExists(newFilePath);
+
+                    // Verifica si las carpetas padre están vacías y las borra si es así (excepto el directorio raíz)
+                    Path parentDir = newFilePath.getParent();
+                    deleteEmptyParentDirectories(parentDir, sourceDirectory);
+                }
+                // Elimina la marca "_n" o "_m" del nombre del archivo y lo copia desde la carpeta staging a source
+                else {
+                    String newFileName = "";
+                    if (file.getFileName().toString().endsWith("_n")) {
+                        newFileName = file.getFileName().toString().replace("_n", "");
+                    } else if (file.getFileName().toString().endsWith("_m")) {
+                        newFileName = file.getFileName().toString().replace("_m", "");
+                    }
+
+                    Path newFilePath = targetFile.resolveSibling(newFileName);
+                    // Asegurar que el directorio de destino exista
+                    Path parentDir = newFilePath.getParent();
+                    if (!Files.exists(parentDir)) {
+                        Files.createDirectories(parentDir);
+                    }
+                    Files.copy(file, newFilePath, StandardCopyOption.REPLACE_EXISTING);    
+                }
+
                 return FileVisitResult.CONTINUE;
             }
         });
+    }
 
+    /**
+     * Elimina directorios padres vacíos hasta llegar al directorio raíz especificado.
+     *
+     * @param directory Directorio a verificar y, si está vacío, eliminar.
+     * @param rootDirectory Directorio raíz.
+     * @throws IOException Si ocurre un error al acceder o eliminar directorios.
+     */
+    private static void deleteEmptyParentDirectories(Path directory, String rootDirectory) throws IOException {
+        while (!directory.equals(Paths.get(rootDirectory))) {
+            try (Stream<Path> stream = Files.list(directory)) {
+                if (stream.count() == 0) {
+                    Files.deleteIfExists(directory);
+                } else {
+                    break;
+                }
+            }
+            directory = directory.getParent();
+        }
+    }
+
+    /**
+     * Método para vaciar el directorio de área de preparación.
+     * 
+     * @param stagingDirectory Directorio de área de preparación donde se encuentran los archivos para el commit.
+     * @throws IOException Si ocurre un error al acceder o manipular los archivos.
+     */
+    private static void clearStagingDirectory(String stagingDirectory) throws IOException { 
         // Vaciar el directorio de área de preparación después del commit
         Files.walkFileTree(Paths.get(stagingDirectory), new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                 Files.delete(file);
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                if (!dir.equals(Paths.get(stagingDirectory))) {
+                    Files.delete(dir); // Elimina el directorio una vez que todos los archivos y subdirectorios han sido procesados
+                }
                 return FileVisitResult.CONTINUE;
             }
         });
