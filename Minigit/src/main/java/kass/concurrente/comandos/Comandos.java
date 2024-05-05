@@ -28,6 +28,24 @@ public class Comandos {
             case "git status":
                 System.out.println("Ejecutando 'git status'...");
                 break;
+            case "git init":
+                System.out.println("Ejecutando 'git init'...");
+                break;
+            case "git pull":
+                System.out.println("Ejecutando 'git pull'...");
+                break;
+            case "git commit":
+                System.out.println("Ejecutando 'git commit'...");
+                break;
+            case "git diff":
+                System.out.println("Ejecutando 'git diff'...");
+                break;
+            case "git checkout":
+                System.out.println("Ejecutando 'git checkout'...");
+                break;
+            case "git merge":
+                System.out.println("Ejecutando 'git merge'...");
+                break;
             default:
                 System.out.println("Comando no reconocido. Use 'help' para obtener ayuda.");
                 break;
@@ -43,6 +61,12 @@ public class Comandos {
         System.out.println(Mensajes.getMensaje("git add"));
         System.out.println(Mensajes.getMensaje("git branch"));
         System.out.println(Mensajes.getMensaje("git status"));
+        System.out.println(Mensajes.getMensaje("git init"));
+        System.out.println(Mensajes.getMensaje("git pull"));
+        System.out.println(Mensajes.getMensaje("git commit"));
+        System.out.println(Mensajes.getMensaje("git diff"));
+        System.out.println(Mensajes.getMensaje("git checkout"));
+        System.out.println(Mensajes.getMensaje("git merge")); 
         System.out.println(Mensajes.getMensaje("help")); 
     }
 
@@ -64,8 +88,14 @@ public class Comandos {
         System.out.println("2.- git add");
         System.out.println("3.- git branch");
         System.out.println("4.- git status");
-        System.out.println("5.- help");
-        System.out.println("6.- exit");
+        System.out.println("5.- git init" );
+        System.out.println("6.- git pull");
+        System.out.println("7.- git commit");
+        System.out.println("8.- git diff");
+        System.out.println("9.- git checkout");
+        System.out.println("10.- git merge");
+        System.out.println("11.- help");
+        System.out.println("12.- exit");
     }
 
     public static void main(String[] args) {

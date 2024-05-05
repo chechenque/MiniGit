@@ -21,6 +21,12 @@ public class Mensajes {
         ayudaComandos.put("git branch", "git branch: Lista las ramas locales en el repositorio actual, con la rama actual resaltada. " +
                                         "También se puede usar para crear.");
         ayudaComandos.put("git status", "git status: ver qué cambios se han realizado en tu área de trabajo y cuáles están preparados para ser incluidos en el próximo commit.");
+        ayudaComandos.put("git init", "Crea un nuevo repositorio en un directorio específico.");
+        ayudaComandos.put("git commit", "Confirma los cambios en el área de preparación y los guardar en el repositorio local.");
+        ayudaComandos.put("git pull", "Recupera los cambios de un repositorio remoto y los fusiona automáticamente con la rama actual del repositorio local.");
+        ayudaComandos.put("git diff", "Muestra la diferencia entre el contenido actual y el último commit. ");
+        ayudaComandos.put("git checkout", "Carga el commit o rama sobre la que se quiere trabajar.");
+        ayudaComandos.put("git merge", "Fusiona una o más ramas dentro de la rama que se tiene activa");
         ayudaComandos.put("help", "help: Muestra información de ayuda sobre los comandos disponibles.");
     }
 
