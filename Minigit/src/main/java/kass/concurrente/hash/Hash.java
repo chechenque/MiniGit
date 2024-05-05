@@ -40,6 +40,7 @@ public class Hash {
      * @return El hash SHA-1 como una cadena de texto hexadecimal.
      */
     public static String generaHash(String rama, String descripcion) {
+        if(rama.equals("")||descripcion.equals("")) throw new IllegalArgumentException("No puede existir campos vacios");
         try {
             String input = rama + descripcion;
             MessageDigest md = MessageDigest.getInstance("SHA-1");
