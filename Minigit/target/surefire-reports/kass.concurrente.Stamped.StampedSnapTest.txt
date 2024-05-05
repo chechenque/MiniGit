@@ -1,10 +1,10 @@
 -------------------------------------------------------------------------------
 Test set: kass.concurrente.Stamped.StampedSnapTest
 -------------------------------------------------------------------------------
-Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.061 s - in kass.concurrente.Stamped.StampedSnapTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s - in kass.concurrente.Stamped.StampedSnapTest
 testStampedSnapSetters  Time elapsed: 0 s
 testStampedValueConstructor  Time elapsed: 0 s
 testStampedValueSetters  Time elapsed: 0 s
-testStampedSnapConstructor  Time elapsed: 0.008 s
-testStampedSnapAddCommit  Time elapsed: 0.006 s
-testStampedValueMax  Time elapsed: 0.005 s
+testStampedSnapConstructor  Time elapsed: 0 s
+testStampedSnapAddCommit  Time elapsed: 0 s
+testStampedValueMax  Time elapsed: 0.009 s

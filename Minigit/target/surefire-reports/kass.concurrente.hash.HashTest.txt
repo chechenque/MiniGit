@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 Test set: kass.concurrente.hash.HashTest
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.623 s - in kass.concurrente.hash.HashTest
-testGeneraHashDistintos  Time elapsed: 0.369 s
-testCreaDirectorio  Time elapsed: 0.173 s
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.648 s - in kass.concurrente.hash.HashTest
+testGeneraHashDistintos  Time elapsed: 0.311 s
+testCreaDirectorio  Time elapsed: 0.272 s

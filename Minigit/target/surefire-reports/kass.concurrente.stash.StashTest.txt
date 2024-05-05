@@ -1,18 +1,18 @@
 -------------------------------------------------------------------------------
 Test set: kass.concurrente.stash.StashTest
 -------------------------------------------------------------------------------
-Tests run: 5, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.281 s <<< FAILURE! - in kass.concurrente.stash.StashTest
-getUltimoStashTest  Time elapsed: 0.071 s
-guardarStashTest  Time elapsed: 0.065 s  <<< FAILURE!
+Tests run: 5, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.181 s <<< FAILURE! - in kass.concurrente.stash.StashTest
+getUltimoStashTest  Time elapsed: 0.026 s
+guardarStashTest  Time elapsed: 0.046 s  <<< FAILURE!
 org.opentest4j.AssertionFailedError: El stash debió ser guardado correctamente.
 	at kass.concurrente.stash.StashTest.guardarStashTest(StashTest.java:73)
 
-getNombresTest  Time elapsed: 0.011 s  <<< FAILURE!
+getNombresTest  Time elapsed: 0.016 s  <<< FAILURE!
 org.opentest4j.AssertionFailedError: 
 	at kass.concurrente.stash.StashTest.getNombresTest(StashTest.java:82)
 
-borraStashTest  Time elapsed: 0.01 s
-getRutaStashTest  Time elapsed: 0.009 s  <<< FAILURE!
+borraStashTest  Time elapsed: 0.016 s
+getRutaStashTest  Time elapsed: 0.011 s  <<< FAILURE!
 org.opentest4j.AssertionFailedError: expected: <> but was: </home/paola/Documentos/OctavoSemestre/CC/MiniGitFinal/MiniGit/Minigit/stashes/ramaTest/inexistente>
 	at kass.concurrente.stash.StashTest.getRutaStashTest(StashTest.java:96)
 

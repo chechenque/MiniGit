@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="kass.concurrente.stash.StashTest" time="0.281" tests="5" errors="0" skipped="0" failures="3">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="kass.concurrente.stash.StashTest" time="0.181" tests="5" errors="0" skipped="0" failures="3">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="MX"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-17-openjdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/paola/Documentos/OctavoSemestre/CC/MiniGitFinal/MiniGit/Minigit/target/surefire/surefirebooter6658252541320948540.jar /home/paola/Documentos/OctavoSemestre/CC/MiniGitFinal/MiniGit/Minigit/target/surefire 2024-05-05T14-24-55_356-jvmRun1 surefire16428759496533336913tmp surefire_06663425321469203012tmp"/>
+    <property name="sun.java.command" value="/home/paola/Documentos/OctavoSemestre/CC/MiniGitFinal/MiniGit/Minigit/target/surefire/surefirebooter5810305782394847428.jar /home/paola/Documentos/OctavoSemestre/CC/MiniGitFinal/MiniGit/Minigit/target/surefire 2024-05-05T15-03-56_934-jvmRun1 surefire11353879359610452017tmp surefire_0546526744204029706tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/paola/Documentos/OctavoSemestre/CC/MiniGitFinal/MiniGit/Minigit/target/test-classes:/home/paola/Documentos/OctavoSemestre/CC/MiniGitFinal/MiniGit/Minigit/target/classes:/home/paola/.m2/repository/org/junit/jupiter/junit-jupiter/5.5.1/junit-jupiter-5.5.1.jar:/home/paola/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.5.1/junit-jupiter-api-5.5.1.jar:/home/paola/.m2/repository/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.jar:/home/paola/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/home/paola/.m2/repository/org/junit/platform/junit-platform-commons/1.5.1/junit-platform-commons-1.5.1.jar:/home/paola/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.5.1/junit-jupiter-params-5.5.1.jar:/home/paola/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.5.1/junit-jupiter-engine-5.5.1.jar:/home/paola/.m2/repository/org/junit/platform/junit-platform-engine/1.5.1/junit-platform-engine-1.5.1.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -27,7 +27,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="/home/paola/Documentos/OctavoSemestre/CC/MiniGitFinal/MiniGit/Minigit/target/surefire/surefirebooter6658252541320948540.jar"/>
+    <property name="surefire.real.class.path" value="/home/paola/Documentos/OctavoSemestre/CC/MiniGitFinal/MiniGit/Minigit/target/surefire/surefirebooter5810305782394847428.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="17.0.10+7-Ubuntu-122.04.1"/>
     <property name="user.name" value="paola"/>
@@ -51,19 +51,19 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="61.0"/>
   </properties>
-  <testcase name="getUltimoStashTest" classname="kass.concurrente.stash.StashTest" time="0.071"/>
-  <testcase name="guardarStashTest" classname="kass.concurrente.stash.StashTest" time="0.065">
+  <testcase name="getUltimoStashTest" classname="kass.concurrente.stash.StashTest" time="0.026"/>
+  <testcase name="guardarStashTest" classname="kass.concurrente.stash.StashTest" time="0.046">
     <failure message="El stash debió ser guardado correctamente." type="org.opentest4j.AssertionFailedError">org.opentest4j.AssertionFailedError: El stash debió ser guardado correctamente.
 	at kass.concurrente.stash.StashTest.guardarStashTest(StashTest.java:73)
 </failure>
   </testcase>
-  <testcase name="getNombresTest" classname="kass.concurrente.stash.StashTest" time="0.011">
+  <testcase name="getNombresTest" classname="kass.concurrente.stash.StashTest" time="0.016">
     <failure type="org.opentest4j.AssertionFailedError:">org.opentest4j.AssertionFailedError: 
 	at kass.concurrente.stash.StashTest.getNombresTest(StashTest.java:82)
 </failure>
   </testcase>
-  <testcase name="borraStashTest" classname="kass.concurrente.stash.StashTest" time="0.01"/>
-  <testcase name="getRutaStashTest" classname="kass.concurrente.stash.StashTest" time="0.009">
+  <testcase name="borraStashTest" classname="kass.concurrente.stash.StashTest" time="0.016"/>
+  <testcase name="getRutaStashTest" classname="kass.concurrente.stash.StashTest" time="0.011">
     <failure message="expected: &lt;&gt; but was: &lt;/home/paola/Documentos/OctavoSemestre/CC/MiniGitFinal/MiniGit/Minigit/stashes/ramaTest/inexistente&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <> but was: </home/paola/Documentos/OctavoSemestre/CC/MiniGitFinal/MiniGit/Minigit/stashes/ramaTest/inexistente>
 	at kass.concurrente.stash.StashTest.getRutaStashTest(StashTest.java:96)
 ]]></failure>

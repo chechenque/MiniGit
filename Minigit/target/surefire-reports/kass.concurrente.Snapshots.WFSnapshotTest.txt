@@ -1,12 +1,12 @@
 -------------------------------------------------------------------------------
 Test set: kass.concurrente.Snapshots.WFSnapshotTest
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.093 s <<< FAILURE! - in kass.concurrente.Snapshots.WFSnapshotTest
-testWFSnapshotList  Time elapsed: 0.037 s  <<< ERROR!
+Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.043 s <<< FAILURE! - in kass.concurrente.Snapshots.WFSnapshotTest
+testWFSnapshotList  Time elapsed: 0.006 s  <<< ERROR!
 java.lang.NumberFormatException: For input string: "main"
-	at kass.concurrente.Snapshots.WFSnapshotTest.testWFSnapshotList(WFSnapshotTest.java:43)
+	at kass.concurrente.Snapshots.WFSnapshotTest.testWFSnapshotList(WFSnapshotTest.java:59)
 
 testWFSnapshotArray  Time elapsed: 0.029 s  <<< ERROR!
 java.lang.NumberFormatException: For input string: "main"
-	at kass.concurrente.Snapshots.WFSnapshotTest.testWFSnapshotArray(WFSnapshotTest.java:21)
+	at kass.concurrente.Snapshots.WFSnapshotTest.testWFSnapshotArray(WFSnapshotTest.java:32)
 
