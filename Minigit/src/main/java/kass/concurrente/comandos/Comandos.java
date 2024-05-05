@@ -1,7 +1,16 @@
 package kass.concurrente.comandos;
 import java.util.Scanner;
 
+/**
+ * Clase Comandos que simula un terminal de comandos git y ofrece ayuda relacionada.
+ * @author Gorilas Furiosos
+ */
 public class Comandos {
+    
+    /**
+     * Ejecuta un comando específico mostrando un mensaje en consola.
+     * @param comando El comando git o 'help' que el usuario quiere ejecutar.
+     */
     public void ejecutarComando(String comando) {
         switch(comando) {
             case "git push":
@@ -20,26 +29,35 @@ public class Comandos {
                 System.out.println("Ejecutando 'git status'...");
                 break;
             default:
-                System.out.println("Comando no reconocido. Use 'git help' para obtener ayuda.");
+                System.out.println("Comando no reconocido. Use 'help' para obtener ayuda.");
                 break;
         }
     }
 
+    /**
+     * Muestra ayuda para todos los comandos disponibles.
+     */
     public void showHelp() {
-     
         System.out.println("Comandos disponibles:");
         System.out.println(Mensajes.getMensaje("git push"));
         System.out.println(Mensajes.getMensaje("git add"));
         System.out.println(Mensajes.getMensaje("git branch"));
         System.out.println(Mensajes.getMensaje("git status"));
-        System.out.println(Mensajes.getMensaje("git help")); 
+        System.out.println(Mensajes.getMensaje("help")); 
     }
 
+    /**
+     * Proporciona ayuda para un comando específico a partir de una entrada que comienza con 'help'.
+     * @param comando El comando completo incluyendo la palabra 'help'.
+     */
     public static void helpComando(String comando) {
         String quitarHelp = comando.substring(5);
         System.out.println(Mensajes.getMensaje(quitarHelp)); 
     }
 
+    /**
+     * Muestra un menú con las opciones de comandos disponibles para el usuario.
+     */
     public static void showMenu() {
         System.out.println("Comandos disponibles:");
         System.out.println("1.- git push" );
@@ -64,7 +82,6 @@ public class Comandos {
             }
             if (input.startsWith("help") && input.split("\\s+").length > 1) {
                 helpComando(input);
-                //System.out.println(Mensajes.getMensaje(input.split("\\s+")[1]));
             } else {
                 gitTerminal.ejecutarComando(input);
             }
