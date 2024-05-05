@@ -1,3 +1,4 @@
+
 package kass.concurrente.Stamped;
 
 import org.junit.jupiter.api.Test;
@@ -7,12 +8,21 @@ import kass.concurrente.stamped.StampedValue;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
+import java.util.ArrayList; // Para guardar lista de cambios por StampedSnap
 
-public class StampedSnapTest {
 
+/**
+ * Clase de prueba para la clase StampedSnap y StampedValue.
+ * @author PaoPatrol / Vargas Bravo Paola
+ * @version 1.0
+ */
+class StampedSnapTest {
+
+    /**
+     * Prueba el constructor de StampedSnap.
+     */
     @Test
-    public void testStampedSnapConstructor() {
+    void testStampedSnapConstructor() {
         StampedSnap<Integer> stampedSnap = new StampedSnap<>(5);
         
         assertEquals(0, stampedSnap.getStamp());
@@ -21,8 +31,11 @@ public class StampedSnapTest {
         assertEquals(Integer.valueOf(5), stampedSnap.getCommit(0));
     }
 
+    /**
+     * Prueba los métodos setters de StampedSnap.
+     */
     @Test
-    public void testStampedSnapSetters() {
+    void testStampedSnapSetters() {
         StampedSnap<String> stampedSnap = new StampedSnap<>("Initial");
         ArrayList<String> newSnap = new ArrayList<>();
         newSnap.add("Change1");
@@ -39,8 +52,11 @@ public class StampedSnapTest {
         assertEquals("Change2", stampedSnap.getCommit(1));
     }
 
+    /**
+     * Prueba el método addCommit de StampedSnap.
+     */
     @Test
-    public void testStampedSnapAddCommit() {
+    void testStampedSnapAddCommit() {
         StampedSnap<Double> stampedSnap = new StampedSnap<>(3.14);
         
         stampedSnap.addCommit(2.71);
@@ -52,16 +68,22 @@ public class StampedSnapTest {
     }
 
 
+    /**
+     * Prueba el constructor de StampedValue.
+     */
     @Test
-    public void testStampedValueConstructor() {
+    void testStampedValueConstructor() {
         StampedValue<Integer> stampedValue = new StampedValue<>(10);
         
         assertEquals(0, stampedValue.getStamp());
         assertEquals(Integer.valueOf(10), stampedValue.value());
     }
 
+    /**
+     * Prueba los métodos setters de StampedValue.
+     */
     @Test
-    public void testStampedValueSetters() {
+    void testStampedValueSetters() {
         StampedValue<String> stampedValue = new StampedValue<>("Initial");
         
         stampedValue.setStamp(5);
@@ -71,10 +93,13 @@ public class StampedSnapTest {
         assertEquals("Updated", stampedValue.value());
     }
 
+    /**
+     * Prueba el método estático max de StampedValue.
+     */
     @Test
-    public void testStampedValueMax() {
+    void testStampedValueMax() {
         StampedValue<Integer> stampedValue1 = new StampedValue<>(5);
-        StampedValue<Integer> stampedValue2 = new StampedValue<>(10);
+        StampedValue<Integer> stampedValue2 = new StampedValue<>(10,10);
         
         StampedValue<Integer> maxStampedValue = StampedValue.max(stampedValue1, stampedValue2);
         
