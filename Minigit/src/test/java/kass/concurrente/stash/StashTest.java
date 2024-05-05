@@ -26,14 +26,22 @@ import kass.concurrente.modelos.Carpeta;
  */
 class StashTest {
 
+    /** Instancia de Stash a usar */
     private static Stash stash;
+    /** Instancia de random */
     private static Random rnd;
+    /** Archivos del stash de prueba */
     private static List<Archivo> archivos; 
+    /** Carpeta de prueba para stash */
     private static Carpeta carpetaTest;
+    /** Nombre de la rama prueba */
     private final String ramaNombre = "ramaTest";
+    /** Nombre de la carpeta prueba */
     private static final String carpetaNombre = "carpetaTest";
+    /** Ruta de prueba */
     private static final String rutaTest = "ruta" + File.separator + 
                                     "para" + File.separator + "test";
+    /** Ruta general */
     private final String rutaStash = System.getProperty("user.dir") 
                                      + File.separator + "stashes";
 
@@ -46,6 +54,11 @@ class StashTest {
         carpetaTest = generaCarpeta(archivos);
     }
 
+    /**
+     * Método para generar archivos prueba.
+     * @param vacios si los archivos deben estar vacíos
+     * @return una lista de instancias de Archivo.
+     */
     private static List<Archivo> generaArchivos(boolean vacios) {
         int numArchivos = rnd.nextInt(7) + 1; // Genera un número aleatorio entre 1 y 7
         List<Archivo> result = new ArrayList<>();
@@ -58,6 +71,11 @@ class StashTest {
         return result;
     }
 
+    /**
+     * Método para generar una carpeta de prueba.
+     * @param archivos los archivos que debe contener la carpeta.
+     * @return una instancia Carpeta con estructura.
+     */
     private static Carpeta generaCarpeta(List<Archivo> archivos) { 
         Carpeta dirTemp = new Carpeta(rutaTest, carpetaNombre);
         dirTemp.setArchivos(archivos);
@@ -65,6 +83,9 @@ class StashTest {
         return dirTemp;
     }
 
+    /**
+     * Método que prueba que un stash sea correctamente guardado.
+     */
     @Test
     void guardarStashTest() {
         try {
@@ -74,6 +95,11 @@ class StashTest {
         }
     }
 
+    /**
+     * Método que prueba que los archivos en el stash sean los 
+     * mismos definidos en la lista de archivos creada en estos 
+     * tests y con su mismo nombre.
+     */
     @Test 
     void getNombresTest() {
         String stashes = stash.getNombres(ramaNombre);
@@ -84,11 +110,19 @@ class StashTest {
             assertEquals(nombres[i], archivos.get(i).getNombre());
     }
 
+    /**
+     * Método que prueba que el último Stash no sea vacío y devuelva el 
+     * creado en estos tests.
+     */
     @Test
     void getUltimoStashTest() {
         assertNotEquals("", stash.getUltimoStash(ramaNombre));        
     }
 
+    /**
+     * Método que prueba que la ruta devuelta sea vacía ante un Stash 
+     * inexistente.
+     */
     @Test
     void getRutaStashTest() {
         String stashInex = "inexistente";
@@ -96,6 +130,9 @@ class StashTest {
         assertEquals("", stash.getRutaStash(ramaNombre, stashInex));
     }
 
+    /**
+     * Método que prueba a borraStash.
+     */
     @Test
     void borraStashTest() {
         String stashInex = "inexistente";
