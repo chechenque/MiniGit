@@ -13,7 +13,8 @@ public class InfoCommit {
     private String nombre;
     private String descripcion;
     private Date fecha;
-    private String version;//Sujeto a cambios
+    private String hash;
+    private int checkpoint;//Sujeto a cambios
 
     /**
      * Metodo constructor
@@ -25,13 +26,15 @@ public class InfoCommit {
      * @param nombre El nombre del commit
      * @param descripcion La descripcion del commit
      * @param fecha La fecha del commit
-     * @param version La version del commit
+     * @param hash El valor del Hash
+     * @param checkpoint El checkpoint del commit
      */
-    public InfoCommit(String nombre, String descripcion, Date fecha, String version) {
+    public InfoCommit(String nombre, String descripcion, Date fecha, String hash, int checkpoint) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.fecha = fecha;
-        this.version = version;
+        this.hash = hash;
+        this.checkpoint = checkpoint;
     }
 
     /**
@@ -59,11 +62,19 @@ public class InfoCommit {
     }
 
     /**
-     * Metodo que retorna la version
-     * @return La version
+     * Metodo que retorna el Hash
+     * @return El Hash
      */
-    public String getVersion() {
-        return version;
+    public String getHash(){
+        return hash;
+    }
+
+    /**
+     * Metodo que retorna la checkpoint
+     * @return La checkpoint
+     */
+    public int getCheckpoint() {
+        return checkpoint;
     }
 
     /**
@@ -91,11 +102,19 @@ public class InfoCommit {
     }
 
     /**
-     * Metodo que asgina una nueva version
-     * @param version La nueva version
+     * Metodo que asigna un nuevo Hash
+     * @param hash El nuevo hash
      */
-    public void setVersion(String version) {
-        this.version = version;
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    /**
+     * Metodo que asgina una nueva checkpoint
+     * @param checkpoint La nueva checkpoint
+     */
+    public void setCheckpoint(int checkpoint) {
+        this.checkpoint = checkpoint;
     }
     
 }
