@@ -5,8 +5,8 @@ package kass.concurrente.busqueda;
 public class PruebaBusqueda {
     public static void main(String[] args) {
         try {
-            String nombreArchivo = "WFSnapshotList.java";
-            BuscadorDeArchivos.buscaArchivo(nombreArchivo);
+            
+            BuscadorDeArchivos.buscaTodosArchivos();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
