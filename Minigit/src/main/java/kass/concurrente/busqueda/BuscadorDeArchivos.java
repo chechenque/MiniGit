@@ -44,6 +44,22 @@ public class BuscadorDeArchivos {
     }
 
     /**
+     * Buscamos todos los archivos en el árbol de directorios a partir de una ruta base.
+     * Imprime en pantalla la estructura del árbol de directorios.
+     * @throws InterruptedException Si la ejecución es interrumpida mientras se espera la finalización de las tareas.
+     */
+    public static void buscaTodosArchivos() throws InterruptedException {
+        String rutaBase = "."; // Ruta base (donde nos encontramos actualemente)
+        List<String> arbol = new ArrayList<>(); // Árbol de directorios 
+        List<String> rutasArchivo = new ArrayList<>(); // lista para guardar las rutas de los archivos encontrados
+        busquedaArchivo(rutaBase, "", arbol, rutasArchivo, "", true); // Buscamos todos los archivos y generamos el árbol
+
+        for (String linea : arbol) { 
+            System.out.println(linea); // Se imprime el árbol 
+        }
+    }
+
+    /**
      * Metodo auxiliar que busca un archivo en el árbol de directorios desde una ruta base.
      * @param rutaCarpeta ruta actual.
      * @param prefijo representación jerarquica "├──", "└──" y " " del árbol de directorios.
