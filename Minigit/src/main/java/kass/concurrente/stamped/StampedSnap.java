@@ -1,6 +1,7 @@
 package kass.concurrente.stamped;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Clase que modela un StampedSnap
@@ -31,7 +32,7 @@ public class StampedSnap<T>{
      * @param value El valor a registrar
      * @param snap Los cambios de este
      */
-    public StampedSnap(long label, T value, ArrayList<T> snap){
+    public StampedSnap(long label, T value, List<T> snap){
         this.stamp = label;
         this.value = value;
         this.snap = snap;
@@ -59,7 +60,7 @@ public class StampedSnap<T>{
      * Metodo que retorna el arreglo de snaps
      * @return El arreglo
      */
-    public ArrayList<T> getSnap(){
+    public List<T> getSnap(){
         final String log = "getSnap";
         return snap;
     }
@@ -86,7 +87,7 @@ public class StampedSnap<T>{
      * Metodo que asigna un nuevo arreglo de snapss
      * @param snap El nuevo arreglo
      */
-    public void setSnap(ArrayList<T> snap){
+    public void setSnap(List<T> snap){
         final String log = "setSnap";
         this.snap = snap;
     }

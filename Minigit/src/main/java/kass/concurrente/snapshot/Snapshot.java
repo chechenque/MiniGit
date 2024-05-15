@@ -1,6 +1,6 @@
 package kass.concurrente.snapshot;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Interfaz que modela un snapshot
@@ -20,5 +20,5 @@ public interface Snapshot<T> {
      * del arreglo de registros
      * @return El arreglo de registros
      */
-    public ArrayList<T> scan();
+    public List<T> scan();
 }
