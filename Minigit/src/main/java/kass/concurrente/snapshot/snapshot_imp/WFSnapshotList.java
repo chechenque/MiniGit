@@ -62,7 +62,6 @@ public class WFSnapshotList<T> implements Snapshot<T> {
      * @return El arreglo de registros.
      */
     @Override
-    @SuppressWarnings("unchecked")
     public ArrayList<T> scan() {
         StampedSnap<T>[] oldCopy;
         StampedSnap<T>[] newCopy;
